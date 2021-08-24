@@ -1,7 +1,7 @@
 replicaCount: 1
 
 image:
-  repository: registry.cn-hangzhou.aliyuncs.com/uniondrug-centos/kube-state-metrics
+  repository: tareya/kube-state-metrics
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
   tag: "v1.9.8-for-k8s1.15"
@@ -67,11 +67,11 @@ resources:
   # resources, such as Minikube. If you do want to specify resources, uncomment the following
   # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
   limits:
-    cpu: 2048m
-    memory: 2048Mi
+    cpu: 512m
+    memory: 512Mi
   requests:
-    cpu: 2048m
-    memory: 2048Mi
+    cpu: 512m
+    memory: 512Mi
 
 autosharding:
   enabled: false
