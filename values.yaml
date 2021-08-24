@@ -1,0 +1,129 @@
+replicaCount: 1
+
+image:
+  repository: registry.cn-hangzhou.aliyuncs.com/uniondrug-centos/kube-state-metrics
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: "v1.9.8-for-k8s1.15"
+
+namespace: "kube-system"
+
+labels: {
+  "k8s-app": "kube-state-metrics",
+  "version": "v1.9.8"
+}
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: "kube-state-metrics"
+
+
+rbac:
+  # If true, create & use RBAC resources
+  create: true
+  useClusterRole: true
+  
+podAnnotations: {}
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+service:
+  type: ClusterIP
+
+  http: 
+    name: "http-metrics"
+    port: 8080
+  telemetry: 
+    name: "telemetry"
+    port: 8081
+
+  annotations: {
+    "prometheus.io/scrape": "true"
+  }
+
+customLabels: {}
+
+resources: 
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  limits:
+    cpu: 512m
+    memory: 1024Mi
+  requests:
+    cpu: 512m
+    memory: 1024Mi
+
+autosharding:
+  enabled: false
+
+ingress:
+  enabled: false
+
+kubeconfig:
+  enabled: false
+
+selfMonitor:
+  enabled: false
+    
+tolerations: []
+
+affinity:
+  podAntiAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+    - labelSelector:
+        matchExpressions:
+        - key: app
+          operator: In
+          values:
+          - exterior-gateway
+      topologyKey: "kubernetes.io/hostname"
+
+collectors:
+  certificatesigningrequests: true
+  configmaps: true
+  cronjobs: true
+  daemonsets: true
+  deployments: true
+  endpoints: true
+  horizontalpodautoscalers: true
+  ingresses: true
+  jobs: true
+  limitranges: true
+  mutatingwebhookconfigurations: true
+  namespaces: true
+  networkpolicies: true
+  nodes: true
+  persistentvolumeclaims: true
+  persistentvolumes: true
+  poddisruptionbudgets: true
+  pods: true
+  replicasets: true
+  replicationcontrollers: true
+  resourcequotas: true
+  secrets: true
+  services: true
+  statefulsets: true
+  storageclasses: true
+  validatingwebhookconfigurations: true
+  verticalpodautoscalers: false
+  volumeattachments: true
